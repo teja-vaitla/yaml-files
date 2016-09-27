@@ -1,0 +1,735 @@
+swagger: '2.0'
+info:
+  title: SunSpec oSDX API
+  description: SunSpec oSDX API
+  version: "1.0.0"
+host: api.opendem.com
+schemes:
+  - https
+basePath: /environmental
+produces:
+  - application/json
+
+paths:
+  /ID:
+    get:
+      summary: Model Number
+      description: |
+        Get Include to support various irradiance measurements
+        
+          302 - Irradiance Model  (Include to support various irradiance measurements) 
+        
+          303 - Back of Module Temperature Model  (Include to support variable number of  back of module temperature measurements)
+        
+          304 - Inclinometer Model  (Include to support orienation measurements)
+        
+          305 - GPS  (Include to support location measurements)
+        
+          306 - Reference Point Model  (Include to support a standard reference point)
+        
+          307 - Base Met  (Base Meteorolgical Model)
+        
+          308 - Mini Met Model  (Include to support a few basic measurements
+
+        Applicable Models: 302, 303, 304, 305, 306, 307, 308
+
+        Implementation: Mandatory
+
+        Data Type: uint16
+      tags:
+        - Model_Number
+      responses: 
+        200:
+          description: Include to support various irradiance measurements
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /GHI:
+    get:
+      summary: GHI
+      description: |
+        Get Global Horizontal Irradiance
+
+        Applicable Models: 302,306,308
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Irradiance Model
+        - Reference Point Model
+        - Mini Met Model
+      responses: 
+        200:
+          description: Global Horizontal Irradiance
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /POAI:
+    get:
+      summary: POAI
+      description: |
+        Get Plane-of-Array Irradiance
+
+        Applicable Models: 302
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Irradiance Model
+      responses: 
+        200:
+          description: Plane-of-Array Irradiance
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /DFI:
+    get:
+      summary: DFI
+      description: |
+        Get Diffuse Irradiance
+
+        Applicable Models: 302
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Irradiance Model
+      responses: 
+        200:
+          description: Diffuse Irradiance
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /DNI:
+    get:
+      summary: DNI
+      description: |
+        Get Direct Normal Irradiance
+
+        Applicable Models: 302
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Irradiance Model
+      responses: 
+        200:
+          description: Direct Normal Irradiance
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /OTI:
+    get:
+      summary: OTI
+      description: |
+        Get Other Irradiance
+
+        Applicable Models: 302
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Irradiance Model
+      responses: 
+        200:
+          description: Other Irradiance
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /TmpBOM:
+    get:
+      summary: Temp
+      description: |
+        Get Back of module temperature measurement
+
+        Applicable Models: 303, 308
+
+        SI Units - C
+
+        Implementation: Mandatory
+
+        Data Type: int16
+      tags:
+        - Back of Module Temperature Model
+        - Mini Met Model
+      responses: 
+        200:
+          description: Back of module temperature measurement
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Inclx:
+    get:
+      summary: X
+      description: |
+        Get X-Axis inclination
+
+        Applicable Models: 304
+
+        SI Units - Degrees
+
+        Implementation: Mandatory
+
+        Data Type: int32
+      tags:
+        - Inclinometer Model
+      responses: 
+        200:
+          description: X-Axis inclination
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Incly:
+    get:
+      summary: Y
+      description: |
+        Get Y-Axis inclination
+
+        Applicable Models: 304
+
+        SI Units - Degrees
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - Inclinometer Model
+      responses: 
+        200:
+          description: Y-Axis inclination
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Inclz:
+    get:
+      summary: Z
+      description: |
+        Get Z-Axis inclination
+
+        Applicable Models: 304
+
+        SI Units - Degrees
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - Inclinometer Model
+      responses: 
+        200:
+          description: Z-Axis inclination
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Tm:
+    get:
+      summary: Tm
+      description: |
+        Get UTC 24 hour time stamp to millisecond hhmmss.sssZ format
+
+        Applicable Models: 305
+
+        SI Units - hhmmss.sssZ
+
+        Implementation: Optional
+
+        Data Type: string
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: UTC 24 hour time stamp to millisecond hhmmss.sssZ format
+          schema:
+            $ref: '#/definitions/string_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Date:
+    get:
+      summary: Date
+      description: |
+        Get UTC Date string YYYYMMDD format
+
+        Applicable Models: 305
+
+        SI Units - YYYYMMDD
+
+        Implementation: Optional
+
+        Data Type: string
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: UTC Date string YYYYMMDD format
+          schema:
+            $ref: '#/definitions/string_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Loc:
+    get:
+      summary: Location
+      description: |
+        Get Location string (40 chars max)
+
+        Applicable Models: 305
+
+        SI Units - text
+
+        Implementation: Optional
+
+        Data Type: string
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: Location string (40 chars max)
+          schema:
+            $ref: '#/definitions/string_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Lat:
+    get:
+      summary: Lat
+      description: |
+        Get Lattitude with seven degrees of precision
+
+        Applicable Models: 305
+
+        SI Units - Degrees
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: Lattitude with seven degrees of precision
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Long:
+    get:
+      summary: Long
+      description: |
+        Get Longitude with seven degrees of precision
+
+        Applicable Models: 305
+
+        SI Units - Degrees
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: Longitude with seven degrees of precision
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Alt:
+    get:
+      summary: Altitude
+      description: |
+        Get Altitude measurement in meters
+
+        Applicable Models: 305
+
+        SI Units - meters
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: Altitude measurement in meters
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /A:
+    get:
+      summary: Amps
+      description: |
+        Get Current measurment at reference point
+
+        Applicable Models: 306
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Reference Point Model
+      responses: 
+        200:
+          description: Current measurment at reference point
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /V:
+    get:
+      summary: Voltage
+      description: |
+        Get Voltage  measurment at reference point
+
+        Applicable Models: 306
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Reference Point Model
+      responses: 
+        200:
+          description: Voltage  measurment at reference point
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Tmp:
+    get:
+      summary: Temperature
+      description: |
+        Get Temperature measurment at reference point
+
+        Applicable Models: 306
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Reference Point Model
+      responses: 
+        200:
+          description: Temperature measurment at reference point
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /TmpAmb:
+    get:
+      summary: Ambient Temperature
+      description: |
+        Get Ambient Temperature
+
+        Applicable Models: 307,308
+
+        SI Units - C
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+        - Mini Met Model
+      responses: 
+        200:
+          description: Ambient Temperature
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /RH:
+    get:
+      summary: Relative Humidity
+      description: |
+        Get Relative Humidity
+
+        Applicable Models: 307
+
+        SI Units - Pct
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Relative Humidity
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Pres:
+    get:
+      summary: Barometric Pressure
+      description: |
+        Get Barometric Pressure
+
+        Applicable Models: 307
+
+        SI Units - HPa
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Barometric Pressure
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /WndSpd:
+    get:
+      summary: Wind Speed
+      description: |
+        Get Wind Speed
+
+        Applicable Models: 307, 308
+
+        SI Units - mps
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Wind Speed
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /WndDir:
+    get:
+      summary: Wind Direction
+      description: |
+        Get Wind Direction
+
+        Applicable Models: 307
+
+        SI Units - deg
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Wind Direction
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Rain:
+    get:
+      summary: Rainfall
+      description: |
+        Get Rainfall
+
+        Applicable Models: 307
+
+        SI Units - mm
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Rainfall
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Snw:
+    get:
+      summary: Snow Depth
+      description: |
+        Get Snow Depth
+
+        Applicable Models: 307
+
+        SI Units - mm
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Snow Depth
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /PPT:
+    get:
+      summary: Precipitation Type
+      description: |
+        Get Precipitation Type
+
+        Applicable Models: 307
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Precipitation Type
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+
+definitions:
+  num_parameter:
+    type: object
+    properties: 
+      Parameter: 
+        type: number
+        description: Parameter value.
+      Description: 
+        type: string
+        description: Parameter description.
+  
+
+  string_parameter:
+    type: object
+    properties: 
+      Parameter: 
+        type: string
+        description: Parameter value.
+      Description: 
+        type: string
+        description: Parameter description.
+  
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
