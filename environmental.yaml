@@ -1,11 +1,12 @@
+
 swagger: '2.0'
 info:
   title: SunSpec oSDX API
   description: SunSpec oSDX API
   version: "1.0.0"
-host: api.opendem.com
+host: tejavaitla-test.apigee.net
 schemes:
-  - https
+  - http
 basePath: /environmental
 produces:
   - application/json
