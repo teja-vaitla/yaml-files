@@ -1,270 +1,729 @@
-# this is an example of the Uber API
-# as a demonstration of an API spec in YAML
+
 swagger: '2.0'
 info:
-  title: Uber API
-  description: Move your app forward with the Uber API
+  title: SunSpec oSDX API
+  description: SunSpec oSDX API
   version: "1.0.0"
-# the domain of the service
-host: api.uber.com
-# array of all schemes that your API supports
+host: api.opendem.com
 schemes:
   - https
-# will be prefixed to all paths
-basePath: /v1
+basePath: /environmental
 produces:
   - application/json
+
 paths:
-  /products:
+  /ID:
     get:
-      summary: Product Types
+      summary: Model Number
       description: |
-        The Products endpoint returns information about the *Uber* products
-        offered at a given location. The response includes the display name
-        and other details about each product, and lists the products in the
-        proper display order.
-      parameters:
-        - name: latitude
-          in: query
-          description: Latitude component of location.
-          required: true
-          type: number
-          format: double
-        - name: longitude
-          in: query
-          description: Longitude component of location.
-          required: true
-          type: number
-          format: double
+        Get Include to support various irradiance measurements
+        
+          302 - Irradiance Model  (Include to support various irradiance measurements) 
+        
+          303 - Back of Module Temperature Model  (Include to support variable number of  back of module temperature measurements)
+        
+          304 - Inclinometer Model  (Include to support orienation measurements)
+        
+          305 - GPS  (Include to support location measurements)
+        
+          306 - Reference Point Model  (Include to support a standard reference point)
+        
+          307 - Base Met  (Base Meteorolgical Model)
+        
+          308 - Mini Met Model  (Include to support a few basic measurements
+
+        Applicable Models: 302, 303, 304, 305, 306, 307, 308
+
+        Implementation: Mandatory
+
+        Data Type: uint16
       tags:
-        - Products
-      responses:
+        - Model_Number
+      responses: 
         200:
-          description: An array of products
+          description: Include to support various irradiance measurements
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Product'
+            $ref: '#/definitions/num_parameter'
         default:
-          description: Unexpected error
+          description: Unexpected Error 
           schema:
-            $ref: '#/definitions/Error'
-  /estimates/price:
+            $ref: '#/definitions/Error'  
+
+  /GHI:
     get:
-      summary: Price Estimates
+      summary: GHI
       description: |
-        The Price Estimates endpoint returns an estimated price range
-        for each product offered at a given location. The price estimate is
-        provided as a formatted string with the full price range and the localized
-        currency symbol.<br><br>The response also includes low and high estimates,
-        and the [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code for
-        situations requiring currency conversion. When surge is active for a particular
-        product, its surge_multiplier will be greater than 1, but the price estimate
-        already factors in this multiplier.
-      parameters:
-        - name: start_latitude
-          in: query
-          description: Latitude component of start location.
-          required: true
-          type: number
-          format: double
-        - name: start_longitude
-          in: query
-          description: Longitude component of start location.
-          required: true
-          type: number
-          format: double
-        - name: end_latitude
-          in: query
-          description: Latitude component of end location.
-          required: true
-          type: number
-          format: double
-        - name: end_longitude
-          in: query
-          description: Longitude component of end location.
-          required: true
-          type: number
-          format: double
+        Get Global Horizontal Irradiance
+
+        Applicable Models: 302,306,308
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
       tags:
-        - Estimates
-      responses:
+        - Irradiance Model
+        - Reference Point Model
+        - Mini Met Model
+      responses: 
         200:
-          description: An array of price estimates by product
+          description: Global Horizontal Irradiance
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/PriceEstimate'
+            $ref: '#/definitions/num_parameter'
         default:
-          description: Unexpected error
+          description: Unexpected Error. 
           schema:
-            $ref: '#/definitions/Error'
-  /estimates/time:
+            $ref: '#/definitions/Error'  
+
+  /POAI:
     get:
-      summary: Time Estimates
-      description: The Time Estimates endpoint returns ETAs for all products offered at a given location, with the responses expressed as integers in seconds. We recommend that this endpoint be called every minute to provide the most accurate, up-to-date ETAs.
-      parameters:
-        - name: start_latitude
-          in: query
-          description: Latitude component of start location.
-          required: true
-          type: number
-          format: double
-        - name: start_longitude
-          in: query
-          description: Longitude component of start location.
-          required: true
-          type: number
-          format: double
-        - name: customer_uuid
-          in: query
-          type: string
-          format: uuid
-          description: Unique customer identifier to be used for experience customization.
-        - name: product_id
-          in: query
-          type: string
-          description: Unique identifier representing a specific product for a given latitude & longitude.
+      summary: POAI
+      description: |
+        Get Plane-of-Array Irradiance
+
+        Applicable Models: 302
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
       tags:
-        - Estimates
-      responses:
+        - Irradiance Model
+      responses: 
         200:
-          description: An array of products
+          description: Plane-of-Array Irradiance
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Product'
+            $ref: '#/definitions/num_parameter'
         default:
-          description: Unexpected error
+          description: Unexpected Error. 
           schema:
-            $ref: '#/definitions/Error'
-  /me:
+            $ref: '#/definitions/Error'  
+
+  /DFI:
     get:
-      summary: User Profile
-      description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
+      summary: DFI
+      description: |
+        Get Diffuse Irradiance
+
+        Applicable Models: 302
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
       tags:
-        - User
-      responses:
+        - Irradiance Model
+      responses: 
         200:
-          description: Profile information for a user
+          description: Diffuse Irradiance
           schema:
-            $ref: '#/definitions/Profile'
+            $ref: '#/definitions/num_parameter'
         default:
-          description: Unexpected error
+          description: Unexpected Error. 
           schema:
-            $ref: '#/definitions/Error'
-  /history:
+            $ref: '#/definitions/Error'  
+
+  /DNI:
     get:
-      summary: User Activity
-      description: The User Activity endpoint returns data about a user's lifetime activity with Uber. The response will include pickup locations and times, dropoff locations and times, the distance of past requests, and information about which products were requested.<br><br>The history array in the response will have a maximum length based on the limit parameter. The response value count may exceed limit, therefore subsequent API requests may be necessary.
-      parameters:
-        - name: offset
-          in: query
-          type: integer
-          format: int32
-          description: Offset the list of returned results by this amount. Default is zero.
-        - name: limit
-          in: query
-          type: integer
-          format: int32
-          description: Number of items to retrieve. Default is 5, maximum is 100.
+      summary: DNI
+      description: |
+        Get Direct Normal Irradiance
+
+        Applicable Models: 302
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
       tags:
-        - User
-      responses:
+        - Irradiance Model
+      responses: 
         200:
-          description: History information for the given user
+          description: Direct Normal Irradiance
           schema:
-            $ref: '#/definitions/Activities'
+            $ref: '#/definitions/num_parameter'
         default:
-          description: Unexpected error
+          description: Unexpected Error. 
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/Error'  
+
+  /OTI:
+    get:
+      summary: OTI
+      description: |
+        Get Other Irradiance
+
+        Applicable Models: 302
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Irradiance Model
+      responses: 
+        200:
+          description: Other Irradiance
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /TmpBOM:
+    get:
+      summary: Temp
+      description: |
+        Get Back of module temperature measurement
+
+        Applicable Models: 303, 308
+
+        SI Units - C
+
+        Implementation: Mandatory
+
+        Data Type: int16
+      tags:
+        - Back of Module Temperature Model
+        - Mini Met Model
+      responses: 
+        200:
+          description: Back of module temperature measurement
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Inclx:
+    get:
+      summary: X
+      description: |
+        Get X-Axis inclination
+
+        Applicable Models: 304
+
+        SI Units - Degrees
+
+        Implementation: Mandatory
+
+        Data Type: int32
+      tags:
+        - Inclinometer Model
+      responses: 
+        200:
+          description: X-Axis inclination
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Incly:
+    get:
+      summary: Y
+      description: |
+        Get Y-Axis inclination
+
+        Applicable Models: 304
+
+        SI Units - Degrees
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - Inclinometer Model
+      responses: 
+        200:
+          description: Y-Axis inclination
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Inclz:
+    get:
+      summary: Z
+      description: |
+        Get Z-Axis inclination
+
+        Applicable Models: 304
+
+        SI Units - Degrees
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - Inclinometer Model
+      responses: 
+        200:
+          description: Z-Axis inclination
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Tm:
+    get:
+      summary: Tm
+      description: |
+        Get UTC 24 hour time stamp to millisecond hhmmss.sssZ format
+
+        Applicable Models: 305
+
+        SI Units - hhmmss.sssZ
+
+        Implementation: Optional
+
+        Data Type: string
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: UTC 24 hour time stamp to millisecond hhmmss.sssZ format
+          schema:
+            $ref: '#/definitions/string_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Date:
+    get:
+      summary: Date
+      description: |
+        Get UTC Date string YYYYMMDD format
+
+        Applicable Models: 305
+
+        SI Units - YYYYMMDD
+
+        Implementation: Optional
+
+        Data Type: string
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: UTC Date string YYYYMMDD format
+          schema:
+            $ref: '#/definitions/string_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Loc:
+    get:
+      summary: Location
+      description: |
+        Get Location string (40 chars max)
+
+        Applicable Models: 305
+
+        SI Units - text
+
+        Implementation: Optional
+
+        Data Type: string
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: Location string (40 chars max)
+          schema:
+            $ref: '#/definitions/string_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Lat:
+    get:
+      summary: Lat
+      description: |
+        Get Lattitude with seven degrees of precision
+
+        Applicable Models: 305
+
+        SI Units - Degrees
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: Lattitude with seven degrees of precision
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Long:
+    get:
+      summary: Long
+      description: |
+        Get Longitude with seven degrees of precision
+
+        Applicable Models: 305
+
+        SI Units - Degrees
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: Longitude with seven degrees of precision
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Alt:
+    get:
+      summary: Altitude
+      description: |
+        Get Altitude measurement in meters
+
+        Applicable Models: 305
+
+        SI Units - meters
+
+        Implementation: Optional
+
+        Data Type: int32
+      tags:
+        - GPS
+      responses: 
+        200:
+          description: Altitude measurement in meters
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /A:
+    get:
+      summary: Amps
+      description: |
+        Get Current measurment at reference point
+
+        Applicable Models: 306
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Reference Point Model
+      responses: 
+        200:
+          description: Current measurment at reference point
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /V:
+    get:
+      summary: Voltage
+      description: |
+        Get Voltage  measurment at reference point
+
+        Applicable Models: 306
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Reference Point Model
+      responses: 
+        200:
+          description: Voltage  measurment at reference point
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Tmp:
+    get:
+      summary: Temperature
+      description: |
+        Get Temperature measurment at reference point
+
+        Applicable Models: 306
+
+        SI Units - W/m2
+
+        Implementation: Optional
+
+        Data Type: uint16
+      tags:
+        - Reference Point Model
+      responses: 
+        200:
+          description: Temperature measurment at reference point
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /TmpAmb:
+    get:
+      summary: Ambient Temperature
+      description: |
+        Get Ambient Temperature
+
+        Applicable Models: 307,308
+
+        SI Units - C
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+        - Mini Met Model
+      responses: 
+        200:
+          description: Ambient Temperature
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /RH:
+    get:
+      summary: Relative Humidity
+      description: |
+        Get Relative Humidity
+
+        Applicable Models: 307
+
+        SI Units - Pct
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Relative Humidity
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Pres:
+    get:
+      summary: Barometric Pressure
+      description: |
+        Get Barometric Pressure
+
+        Applicable Models: 307
+
+        SI Units - HPa
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Barometric Pressure
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /WndSpd:
+    get:
+      summary: Wind Speed
+      description: |
+        Get Wind Speed
+
+        Applicable Models: 307, 308
+
+        SI Units - mps
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Wind Speed
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /WndDir:
+    get:
+      summary: Wind Direction
+      description: |
+        Get Wind Direction
+
+        Applicable Models: 307
+
+        SI Units - deg
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Wind Direction
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Rain:
+    get:
+      summary: Rainfall
+      description: |
+        Get Rainfall
+
+        Applicable Models: 307
+
+        SI Units - mm
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Rainfall
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /Snw:
+    get:
+      summary: Snow Depth
+      description: |
+        Get Snow Depth
+
+        Applicable Models: 307
+
+        SI Units - mm
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Snow Depth
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error. 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /PPT:
+    get:
+      summary: Precipitation Type
+      description: |
+        Get Precipitation Type
+
+        Applicable Models: 307
+
+        Implementation: Optional
+
+        Data Type: int16
+      tags:
+        - Base Met
+      responses: 
+        200:
+          description: Precipitation Type
+          schema:
+            $ref: '#/definitions/num_parameter'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+
 definitions:
-  Product:
+  num_parameter:
     type: object
-    properties:
-      product_id:
-        type: string
-        description: Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles.
-      description:
-        type: string
-        description: Description of product.
-      display_name:
-        type: string
-        description: Display name of product.
-      capacity:
-        type: string
-        description: Capacity of product. For example, 4 people.
-      image:
-        type: string
-        description: Image URL representing the product.
-  PriceEstimate:
-    type: object
-    properties:
-      product_id:
-        type: string
-        description: Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles
-      currency_code:
-        type: string
-        description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
-      display_name:
-        type: string
-        description: Display name of product.
-      estimate:
-        type: string
-        description: Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or "Metered" for TAXI.
-      low_estimate:
+    properties: 
+      Parameter: 
         type: number
-        description: Lower bound of the estimated price.
-      high_estimate:
-        type: number
-        description: Upper bound of the estimated price.
-      surge_multiplier:
-        type: number
-        description: Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier.
-  Profile:
+        description: Parameter value.
+      Description: 
+        type: string
+        description: Parameter description.
+  
+
+  string_parameter:
     type: object
-    properties:
-      first_name:
+    properties: 
+      Parameter: 
         type: string
-        description: First name of the Uber user.
-      last_name:
+        description: Parameter value.
+      Description: 
         type: string
-        description: Last name of the Uber user.
-      email:
-        type: string
-        description: Email address of the Uber user
-      picture:
-        type: string
-        description: Image URL of the Uber user.
-      promo_code:
-        type: string
-        description: Promo code of the Uber user.
-  Activity:
-    type: object
-    properties:
-      uuid:
-        type: string
-        description: Unique identifier for the activity
-  Activities:
-    type: object
-    properties:
-      offset:
-        type: integer
-        format: int32
-        description: Position in pagination.
-      limit:
-        type: integer
-        format: int32
-        description: Number of items to retrieve (100 max).
-      count:
-        type: integer
-        format: int32
-        description: Total number of items available.
-      history:
-        type: array
-        items:
-          $ref: '#/definitions/Activity'
+        description: Parameter description.
+  
+
   Error:
     type: object
     properties:
